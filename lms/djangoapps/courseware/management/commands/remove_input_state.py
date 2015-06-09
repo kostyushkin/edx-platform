@@ -11,7 +11,8 @@ from optparse import make_option
 from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
 
-from courseware.models import StudentModule, StudentModuleHistory
+from courseware.models import StudentModule
+from courseware.user_state_client import DjangoXBlockUserStateClient
 
 LOG = logging.getLogger(__name__)
 
@@ -72,7 +73,9 @@ class Command(BaseCommand):
                 continue
             self.remove_studentmodule_input_state(module, save_changes)
 
-            hist_modules = StudentModuleHistory.objects.filter(student_module_id=student_module_id)
+            user_state_client = DjangoXBlockUserStateClient(request.user)
+            hist_modules = user_state_client.get_history(student_username, usage_key)
+        
             for hist_module in hist_modules:
                 self.remove_studentmodulehistory_input_state(hist_module, save_changes)
 

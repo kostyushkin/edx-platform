@@ -47,7 +47,8 @@ from .entrance_exams import (
     user_must_complete_entrance_exam,
     user_has_passed_entrance_exam
 )
-from courseware.models import StudentModule, StudentModuleHistory
+from courseware.models import StudentModule
+from courseware.user_state_client import DjangoXBlockUserStateClient
 from course_modes.models import CourseMode
 
 from open_ended_grading import open_ended_notifications
@@ -1095,8 +1096,8 @@ def submission_history(request, course_id, student_username, location):
     if (student_username != request.user.username) and (not staff_access):
         raise PermissionDenied
 
-    field_data_cache = FieldDataCache([], course.id, request.user)
-    history_entries = field_data_cache.cache.get_history(student_username, usage_key)
+    user_state_client = DjangoXBlockUserStateClient(request.user)
+    history_entries = user_state_client.get_history(student_username, usage_key)
 
     context = {
         'history_entries': history_entries,
