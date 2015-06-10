@@ -61,7 +61,6 @@
             // Manually specify LMS files that are not converted to RequireJS
             'history': 'js/vendor/history',
             'js/mustache': 'js/mustache',
-            'js/verify_student/photocapture': 'js/verify_student/photocapture',
             'js/staff_debug_actions': 'js/staff_debug_actions',
             'js/vendor/jquery.qubit': 'js/vendor/jquery.qubit',
 
@@ -283,9 +282,6 @@
             'js/student_profile/profile': {
                 exports: 'js/student_profile/profile',
                 deps: ['jquery', 'underscore', 'backbone', 'gettext', 'jquery.cookie']
-            },
-            'js/verify_student/photocapture': {
-                exports: 'js/verify_student/photocapture'
             },
             'js/staff_debug_actions': {
                 exports: 'js/staff_debug_actions',
@@ -585,7 +581,6 @@
         'lms/include/teams/js/spec/teams_factory_spec.js',
         'lms/include/js/spec/components/header/header_spec.js',
         'lms/include/js/spec/components/tabbed/tabbed_view_spec.js',
-        'lms/include/js/spec/photocapture_spec.js',
         'lms/include/js/spec/staff_debug_actions_spec.js',
         'lms/include/js/spec/views/notification_spec.js',
         'lms/include/js/spec/views/file_uploader_spec.js',
