@@ -273,6 +273,8 @@ define(['jquery', 'backbone', 'underscore', 'gettext', 'js/views/baseview',
         timedExamination: function (event) {
             event.preventDefault();
             if (!$(event.currentTarget).is(':checked')) {
+                this.$('#id_exam_proctoring').attr('checked', false);
+                this.$('#id_time_limit').val('00:00');
                 this.$('#id_exam_proctoring').attr('disabled','disabled');
                 this.$('#id_time_limit').attr('disabled', 'disabled');
             }
@@ -300,6 +302,10 @@ define(['jquery', 'backbone', 'underscore', 'gettext', 'js/views/baseview',
             this.$('#id_time_limit').val(time);
         },
         setExamTmePreference: function (value) {
+            if (!this.$('#id_timed_examination').is(':checked')) {
+                this.$('#id_exam_proctoring').attr('disabled','disabled');
+                this.$('#id_time_limit').attr('disabled', 'disabled');
+            }
             this.$('#id_timed_examination').prop('checked', value);
         },
         isExamTimeEnabled: function () {

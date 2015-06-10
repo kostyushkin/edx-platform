@@ -756,6 +756,8 @@ define(["jquery", "sinon", "js/common_helpers/ajax_helpers", "js/views/utils/vie
                     target.click();
                     expect($('#id_exam_proctoring')).not.toHaveAttr('disabled','disabled');
                     expect($('#id_time_limit')).not.toHaveAttr('disabled','disabled');
+                    expect($('#id_time_limit').val()).toBe('00:00');
+                    expect($('#id_exam_proctoring')).not.toHaveAttr('checked');
                 });
 
                 it('release date, due date, grading type, and staff lock can be cleared.', function() {
