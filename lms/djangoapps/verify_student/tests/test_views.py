@@ -1584,6 +1584,7 @@ class TestPhotoVerificationResultsCallback(ModuleStoreTestCase):
         VerificationStatus.add_verification_status(checkpoint, self.user, "submitted")
 
 
+@ddt.ddt
 class TestReverifyView(ModuleStoreTestCase):
     """
     Tests for the reverification views.
@@ -1591,7 +1592,14 @@ class TestReverifyView(ModuleStoreTestCase):
     def setUp(self):
         super(TestReverifyView, self).setUp()
 
-    def test_reverify_view(self):
+    def test_reverify_view_can_reverify_denied(self):
+        self.fail("TODO")
+
+    def test_reverify_view_can_reverify_expired(self):
+        self.fail("TODO")
+
+    @ddt.data(None, "pending", "approved")
+    def test_reverify_view_cannot_reverify(self, verification_status):
         self.fail("TODO")
 
 

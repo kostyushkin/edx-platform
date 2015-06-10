@@ -62,8 +62,6 @@ from staticfiles.storage import staticfiles_storage
 
 
 log = logging.getLogger(__name__)
-EVENT_NAME_USER_ENTERED_INCOURSE_REVERIFY_VIEW = 'edx.bi.reverify.started'
-EVENT_NAME_USER_SUBMITTED_INCOURSE_REVERIFY = 'edx.bi.reverify.submitted'
 
 
 class PayAndVerifyView(View):
@@ -1018,7 +1016,10 @@ class ReverifyView(View):
     """
     @method_decorator(login_required)
     def get(self, request):
-        return HttpResponse("TODO :)")
+        context = {
+            "can_reverify": (SoftwareSecurePhotoVerification.user_status(request.user) == "must_reverify")
+        }
+        return render_to_response("verify_student/reverify.html")
 
 
 class InCourseReverifyView(View):
@@ -1075,9 +1076,7 @@ class InCourseReverifyView(View):
             return self._redirect_no_initial_verification(user, course_key)
 
         # emit the reverification event
-        self._track_reverification_events(
-            EVENT_NAME_USER_ENTERED_INCOURSE_REVERIFY_VIEW, user.id, course_id, checkpoint.checkpoint_name
-        )
+        self._track_reverification_events('edx.bi.reverify.started', user.id, course_id, checkpoint.checkpoint_name)
 
         context = {
             'course_key': unicode(course_key),
@@ -1141,9 +1140,7 @@ class InCourseReverifyView(View):
             VerificationStatus.add_verification_status(checkpoint, user, "submitted")
 
             # emit the reverification event
-            self._track_reverification_events(
-                EVENT_NAME_USER_SUBMITTED_INCOURSE_REVERIFY, user.id, course_id, checkpoint.checkpoint_name
-            )
+            self._track_reverification_events('edx.bi.reverify.submitted', user.id, course_id, checkpoint.checkpoint_name)
 
             redirect_url = get_redirect_url(course_key, usage_key)
             response = JsonResponse({'url': redirect_url})
