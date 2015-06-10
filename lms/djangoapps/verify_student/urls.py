@@ -90,22 +90,18 @@ urlpatterns = patterns(
     ),
 
     url(
+        r'^submit-photos/$',
+        views.submit_photos_for_verification,
+        name="verify_student_submit_photos"
+    ),
+
+    # TODO: explain this
+    url(
         r'^reverify$',
         views.ReverifyView.as_view(),
         name="verify_student_reverify"
     ),
 
-    url(
-        r'^reverification_confirmation$',
-        views.reverification_submission_confirmation,
-        name="verify_student_reverification_confirmation"
-    ),
-
-    url(
-        r'^submit-photos/$',
-        views.submit_photos_for_verification,
-        name="verify_student_submit_photos"
-    ),
     # Endpoint for in-course reverification
     # Users are sent to this end-point from within courseware
     # to re-verify their identities by re-submitting face photos.

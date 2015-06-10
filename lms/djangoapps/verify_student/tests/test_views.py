@@ -1591,45 +1591,8 @@ class TestReverifyView(ModuleStoreTestCase):
     def setUp(self):
         super(TestReverifyView, self).setUp()
 
-        self.user = UserFactory.create(username="rusty", password="test")
-        self.user.profile.name = u"Røøsty Bøøgins"
-        self.user.profile.save()
-        self.client.login(username="rusty", password="test")
-        self.course = CourseFactory.create(org='MITx', number='999', display_name='Robot Super Course')
-        self.course_key = self.course.id
-
-    @patch('verify_student.views.render_to_response', render_mock)
-    def test_reverify_get(self):
-        url = reverse('verify_student_reverify')
-        response = self.client.get(url)
-        self.assertEquals(response.status_code, 200)
-        ((_template, context), _kwargs) = render_mock.call_args  # pylint: disable=unpacking-non-sequence
-        self.assertFalse(context['error'])
-
-    @patch('verify_student.views.render_to_response', render_mock)
-    def test_reverify_post_failure(self):
-        url = reverse('verify_student_reverify')
-        response = self.client.post(url, {'face_image': '',
-                                          'photo_id_image': ''})
-        self.assertEquals(response.status_code, 200)
-        ((template, context), _kwargs) = render_mock.call_args  # pylint: disable=unpacking-non-sequence
-        self.assertIn('photo_reverification', template)
-        self.assertTrue(context['error'])
-
-    @patch.dict(settings.FEATURES, {'AUTOMATIC_VERIFY_STUDENT_IDENTITY_FOR_TESTING': True})
-    def test_reverify_post_success(self):
-        url = reverse('verify_student_reverify')
-        response = self.client.post(url, {'face_image': ',',
-                                          'photo_id_image': ','})
-        self.assertEquals(response.status_code, 302)
-        try:
-            verification_attempt = SoftwareSecurePhotoVerification.objects.get(user=self.user)
-            self.assertIsNotNone(verification_attempt)
-        except ObjectDoesNotExist:
-            self.fail('No verification object generated')
-        ((template, context), _kwargs) = render_mock.call_args  # pylint: disable=unpacking-non-sequence
-        self.assertIn('photo_reverification', template)
-        self.assertTrue(context['error'])
+    def test_reverify_view(self):
+        self.fail("TODO")
 
 
 class TestInCourseReverifyView(ModuleStoreTestCase):
