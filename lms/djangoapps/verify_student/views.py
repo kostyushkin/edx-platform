@@ -1017,20 +1017,19 @@ class ReverifyView(View):
     @method_decorator(login_required)
     def get(self, request):
         context = {
-            "can_reverify": (SoftwareSecurePhotoVerification.user_status(request.user) == "must_reverify")
+            "can_reverify": (SoftwareSecurePhotoVerification.user_status(request.user) == "must_reverify"),
+            "user_full_name": request.user.profile.name,
+            "platform_name": settings.PLATFORM_NAME,
+            "capture_sound": staticfiles_storage.url("audio/camera_capture.wav"),
         }
-        return render_to_response("verify_student/reverify.html")
+        return render_to_response("verify_student/reverify.html", context)
 
 
 class InCourseReverifyView(View):
     """
     The in-course reverification view.
-    Needs to perform these functions:
-        - take new face photo
-        - retrieve the old id photo
-        - submit these photos to photo verification service
 
-    Does not need to worry about pricing
+    TODO: rewrite this docstring to differentiate from ReverifyView
     """
     @method_decorator(login_required)
     def get(self, request, course_id, usage_id):
