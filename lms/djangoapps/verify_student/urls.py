@@ -102,12 +102,6 @@ urlpatterns = patterns(
     ),
 
     url(
-        r'^reverification_window_expired$',
-        views.reverification_window_expired,
-        name="verify_student_reverification_window_expired"
-    ),
-
-    url(
         r'^submit-photos/$',
         views.submit_photos_for_verification,
         name="verify_student_submit_photos"

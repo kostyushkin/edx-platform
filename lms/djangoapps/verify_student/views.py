@@ -1074,16 +1074,6 @@ def reverification_submission_confirmation(_request):
     return render_to_response("verify_student/reverification_confirmation.html")
 
 
-@login_required
-def reverification_window_expired(_request):
-    """
-    Displays an error page if a student tries to submit a reverification, but the window
-    for that reverification has already expired.
-    """
-    # TODO need someone to review the copy for this template
-    return render_to_response("verify_student/reverification_window_expired.html")
-
-
 class InCourseReverifyView(View):
     """
     The in-course reverification view.
