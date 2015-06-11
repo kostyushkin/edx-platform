@@ -10,13 +10,13 @@ from base64 import b32encode
 from .course_module import CourseFields
 from .fields import Date
 
-def clean_id(location, padding_char='='):
+def clean_id(location, padding_char):
     """Returns a unique deterministic base32-encoded ID for a course.
 
     Args:
         location (UsageKey): The UsageKey of said course
-        padding_char (str): Character used for padding at end of the
-                            base-32-encoded string, defaulting to '='
+        padding_char (str): Character used for padding at end of the encoded string.
+                            The standard value for this is '='.
     """
     return "course_{}".format(
         b32encode(unicode(location.course_key)).replace('=', padding_char)
