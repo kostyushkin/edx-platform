@@ -1379,7 +1379,11 @@ class CourseDescriptor(CourseFields, LicenseMixin, SequenceDescriptor):
         Checks if the start date set for the course is still default, i.e. .start has not been modified,
         and .advertised_start has not been set.
         """
-        course_metadata_utils.start_date_is_still_default(self.start, self.advertised_start)
+        course_metadata_utils.start_date_is_still_default(
+            self.start,
+            self.advertised_start,
+            CourseFields.start.default
+        )
 
     def end_datetime_text(self, format_string="SHORT_DATE"):
         """

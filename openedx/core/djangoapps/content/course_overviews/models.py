@@ -12,6 +12,7 @@ from django.utils.translation import ugettext
 
 from certificates.api import get_active_web_certificate
 from common.lib.xmodule.xmodule import course_metadata_utils
+from common.lib.xmodule.xmodule.course_module import CourseFields
 from contentstore.utils import course_image_url
 from xmodule.modulestore.django import modulestore
 from xmodule_django.models import CourseKeyField, UsageKeyField
@@ -208,7 +209,11 @@ class CourseOverview(django.db.models.Model):
         Checks if the start date set for the course is still default, i.e. .start has not been modified,
         and .advertised_start has not been set.
         """
-        return course_metadata_utils.start_date_is_still_default(self.start, self.advertised_start)
+        return course_metadata_utils.start_date_is_still_default(
+            self.start,
+            self.advertised_start,
+            CourseFields.start.default
+        )
 
     def end_datetime_text(self, format_string="SHORT_DATE"):
         """

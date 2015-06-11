@@ -7,7 +7,6 @@ classes, which both need these type of functions.
 
 from base64 import b32encode
 
-from .course_module import CourseFields
 from .fields import Date
 
 def clean_id(location, padding_char):
@@ -39,12 +38,12 @@ def _add_timezone_string(date_time):
     return date_time + u" UTC"
 
 @property
-def start_date_is_still_default(start, advertised_start):
+def start_date_is_still_default(start, advertised_start, default_start):
     """
     Checks if the start date set for a course is still default, i.e. .start has not been modified,
     and .advertised_start has not been set.
     """
-    return advertised_start is None and start == CourseFields.start.default
+    return advertised_start is None and start == default_start
 
 def start_datetime_text(start, advertised_start, format_string, ugettext, strftime):
     """
