@@ -11,6 +11,7 @@ try:
 except ImportError:
     import json
 
+from django.contrib.auth.models import User
 from xblock.fields import Scope, ScopeBase
 from xblock_user_state.interface import XBlockUserStateClient
 from courseware.models import StudentModule, StudentModuleHistory
@@ -207,9 +208,10 @@ class DjangoXBlockUserStateClient(XBlockUserStateClient):
         # that were queried in get_many) so that if the score has
         # been changed by some other piece of the code, we don't overwrite
         # that score.
+        user = User.objects.get(username=username)
         for usage_key, state in block_keys_to_state.items():
             student_module, created = StudentModule.objects.get_or_create(
-                student__username=username,
+                student=user,
                 course_id=usage_key.course_key,
                 module_state_key=usage_key,
                 defaults={
