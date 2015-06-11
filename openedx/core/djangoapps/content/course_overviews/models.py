@@ -3,15 +3,22 @@ Declaration of CourseOverview model
 """
 
 import json
+from util.date_utils import strftime_localized
 
 import django.db.models
 from django.db.models.fields import *
 from django.utils.timezone import UTC
+from django.utils.translation import ugettext
 
 from certificates.api import get_active_web_certificate
+from common.lib.xmodule.xmodule import course_metadata_utils
 from contentstore.utils import course_image_url
 from xmodule.modulestore.django import modulestore
 from xmodule_django.models import CourseKeyField, UsageKeyField
+
+# Note: this import must come after import django.db.models.fields import *,
+# else datetime doesn't get imported (not entirely sure why this is)
+from datetime import datetime
 
 class CourseOverview(django.db.models.Model):
     """Model for storing and caching basic information about a course.
@@ -167,7 +174,7 @@ class CourseOverview(django.db.models.Model):
         """
         Return reasonable display name for the course.
         """
-        pass  # TODO me
+        return course_metadata_utils.display_name_with_default(self.display_name, self.location.name)
 
     def has_started(self):
         """
@@ -187,7 +194,13 @@ class CourseOverview(django.db.models.Model):
         Returns the desired text corresponding the course's start date and time in UTC.  Prefers .advertised_start,
         then falls back to .start.
         """
-        pass  # TODO me
+        return course_metadata_utils.start_datetime_text(
+            self.start,
+            self.advertised_start,
+            format_string,
+            ugettext,
+            strftime_localized
+        )
 
     @property
     def start_date_is_still_default(self):
@@ -195,19 +208,28 @@ class CourseOverview(django.db.models.Model):
         Checks if the start date set for the course is still default, i.e. .start has not been modified,
         and .advertised_start has not been set.
         """
-        pass  # TODO me
+        return course_metadata_utils.start_date_is_still_default(self.start, self.advertised_start)
 
     def end_datetime_text(self, format_string="SHORT_DATE"):
         """
         Returns the end date or date_time for the course formatted as a string.
         """
-        pass  # TODO me
+        return course_metadata_utils.end_datetime_text(
+            self.end,
+            format_string,
+            ugettext,
+            strftime_localized
+        )
 
     def may_certify(self):
         """
         Return whether it is acceptable to show the student a certificate download link.
         """
-        pass  # TODO me
+        return course_metadata_utils.may_certify(
+            self.certificates_display_behavior,
+            self.certificates_show_before_end,
+            self.has_ended()
+        )
 
     @property
     def pre_requisite_courses(self):
