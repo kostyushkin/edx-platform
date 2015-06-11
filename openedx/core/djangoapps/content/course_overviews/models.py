@@ -6,6 +6,7 @@ import json
 
 import django.db.models
 from django.db.models.fields import *
+from django.utils.timezone import UTC
 
 from certificates.api import get_active_web_certificate
 from contentstore.utils import course_image_url
@@ -120,14 +121,16 @@ class CourseOverview(django.db.models.Model):
     def __repr__(self):
         """
         Returns a simple string representation of this object for debugging.
+
+        Example return value: CourseOverview(location=course-v1://edX+DemoX.1+2014)
         """
-        pass  # TODO me
+        return "{}(location={})".format(self.__class__.__name__, self.location)
 
     def __str__(self):
         """
         Returns a string representation of this object suitable for a user to see.
         """
-        pass  # TODO me
+        return unicode(self.id)
 
     def clean_id(self, padding_char='='):
         """
@@ -141,17 +144,21 @@ class CourseOverview(django.db.models.Model):
 
     @property
     def location(self):
+        """Returns the UsageKey of this course.
+
+        UsageKeyField has a strange behavior where it fails to parse the "run"
+        of a course out of the serialized form of a Mongo Draft UsageKey. This
+        method is a wrapper around _location attribute that fixes the problem
+        by calling map_into_course, which restores the run attribute.
         """
-        Returns the UsageKey of this course.
-        """
-        pass  # TODO
+        return self._location.map_into_course(self.id)
 
     @property
     def number(self):
         """
         Returns this course's number.
         """
-        pass  # TODO
+        return self.location.course
 
     @property
     def display_name_with_default(self):
@@ -164,14 +171,14 @@ class CourseOverview(django.db.models.Model):
         """
         Returns whether the current time is past the start time.
         """
-        pass  # TODO me
+        return datetime.now(UTC()) > self.start
 
     def has_ended(self):
         """
         Returns whether (a) there is an end time specified and
                         (b) the current time is past it.
         """
-        pass  # TODO me
+        return datetime.now(UTC()) > self.end if self.end else False
 
     def start_datetime_text(self, format_string="SHORT_DATE"):
         """
@@ -205,4 +212,6 @@ class CourseOverview(django.db.models.Model):
         """
         Returns a list of ID strings for this course's prerequisite courses.
         """
-        pass  # TODO me
+        if not hasattr(self, '_pre_requisite_courses'):
+            self._pre_requisite_courses = json.loads(self._pre_requisite_courses_json)
+        return self._pre_requisite_courses
