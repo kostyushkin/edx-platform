@@ -12,7 +12,12 @@
     edx.verify_student.ReverifyView = Backbone.View.extend({
         el: '#reverify-container',
 
-        stepOrder: ["face-photo-step", "id-photo-step", "review-photos-step", "reverify-success-step"],
+        stepOrder: [
+            "face-photo-step",
+            "id-photo-step",
+            "review-photos-step",
+            //"reverify-success-step"
+        ],
         stepViews: {},
 
         initialize: function( obj ) {
@@ -22,7 +27,7 @@
         },
 
         initializeStepViews: function( stepInfo ) {
-            var verificationModel, errorModel, stepViewConstructors, nextStepTitles;
+            var verificationModel, stepViewConstructors, nextStepTitles;
 
             // We need to initialize this here, because
             // outside of this method the subview classes
@@ -35,10 +40,10 @@
             };
 
             nextStepTitles = [
-                gettext( "Take photo" ),
                 gettext( "Take a photo of your ID" ),
                 gettext( "Review your info" ),
-                gettext( "Submit" )
+                gettext( "Submit" ),
+                ""
             ];
 
             // Create the verification model, which is shared
@@ -46,20 +51,20 @@
             // one step to save photos and another step
             // to submit them.
             verificationModel = new edx.verify_student.VerificationModel();
-            errorModel = this.errorModel;
 
-            _.each(this.stepOrder, function(name) {
+            _.each(this.stepOrder, function(name, index) {
                 var stepView = new stepViewConstructors[name]({
-                    errorModel: errorModel,
-                    nextStepTitle: nextStepTitles[name],
-                    stepData: stepInfo[name]
+                    errorModel: this.errorModel,
+                    nextStepTitle: nextStepTitles[index],
+                    stepData: stepInfo[name],
+                    model: verificationModel
                 });
 
                 this.listenTo(stepView, 'next-step', this.nextStep);
                 this.listenTo(stepView, 'go-to-step', this.goToStep);
 
                 this.stepViews[name] = stepView;
-            });
+            }, this);
         },
 
         render: function() {
