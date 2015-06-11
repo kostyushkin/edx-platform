@@ -986,13 +986,16 @@ class ReverifyView(View):
     """
     @method_decorator(login_required)
     def get(self, request):
-        context = {
-            "can_reverify": (SoftwareSecurePhotoVerification.user_status(request.user) == "must_reverify"),
-            "user_full_name": request.user.profile.name,
-            "platform_name": settings.PLATFORM_NAME,
-            "capture_sound": staticfiles_storage.url("audio/camera_capture.wav"),
-        }
-        return render_to_response("verify_student/reverify.html", context)
+        status, _ = SoftwareSecurePhotoVerification.user_status(request.user)
+        if status == "must_reverify":
+            context = {
+                "user_full_name": request.user.profile.name,
+                "platform_name": settings.PLATFORM_NAME,
+                "capture_sound": staticfiles_storage.url("audio/camera_capture.wav"),
+            }
+            return render_to_response("verify_student/reverify.html", context)
+        else:
+            return render_to_response("verify_student/reverify_not_allowed.html", {})
 
 
 class InCourseReverifyView(View):
