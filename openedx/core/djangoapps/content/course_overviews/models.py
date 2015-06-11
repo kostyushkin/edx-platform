@@ -116,3 +116,93 @@ class CourseOverview(django.db.models.Model):
                 course_overview = CourseOverview._create_from_course(course)
                 course_overview.save()  # Save new overview to the cache
         return course_overview
+
+    def __repr__(self):
+        """
+        Returns a simple string representation of this object for debugging.
+        """
+        pass  # TODO me
+
+    def __str__(self)::
+        """
+        Returns a string representation of this object suitable for a user to see.
+        """
+        pass  # TODO me
+
+    def clean_id(self, padding_char='='):
+        """
+        Returns a unique deterministic base32-encoded ID for the course.
+
+        Args
+            padding_char (str): Character used for padding at end of base-32
+                                -encoded string, defaulting to '='
+        """
+        pass  # TODO me
+
+    @property
+    def location(self):
+        """
+        Returns the UsageKey of this course.
+        """
+        pass  # TODO
+
+    @property
+    def number(self):
+        """
+        Returns this course's number.
+        """
+        pass  # TODO
+
+    @property
+    def display_name_with_default(self):
+        """
+        Return reasonable display name for the course.
+        """
+        pass  # TODO me
+
+    def has_started(self):
+        """
+        Returns whether the current time is past the start time.
+        """
+        pass  # TODO me
+
+    def has_ended(self):
+        """
+        Returns whether (a) there is an end time specified and
+                        (b) the current time is past it.
+        """
+        pass  # TODO me
+
+    def start_datetime_text(self, format_string="SHORT_DATE"):
+        """
+        Returns the desired text corresponding the course's start date and time in UTC.  Prefers .advertised_start,
+        then falls back to .start.
+        """
+        pass  # TODO me
+
+    @property
+    def start_date_is_still_default(self):
+        """
+        Checks if the start date set for the course is still default, i.e. .start has not been modified,
+        and .advertised_start has not been set.
+        """
+        pass  # TODO me
+
+    def end_datetime_text(self, format_string="SHORT_DATE"):
+        """
+        Returns the end date or date_time for the course formatted as a string.
+        """
+        pass  # TODO me
+
+    def may_certify(self):
+        """
+        Return whether it is acceptable to show the student a certificate download link.
+        """
+        pass  # TODO me
+
+    @property
+    def pre_requisite_courses(self):
+        """
+        Returns a list of ID strings for this course's prerequisite courses.
+        """
+        pass  # TODO me
