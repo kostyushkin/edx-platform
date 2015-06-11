@@ -72,6 +72,7 @@ def sale_order_record_features(course_id, features):
 
         quantity = int(getattr(purchased_course, 'qty'))
         unit_cost = float(getattr(purchased_course, 'unit_cost'))
+        sale_order_dict.update({"quantity": quantity})
         sale_order_dict.update({"total_amount": quantity * unit_cost})
 
         sale_order_dict.update({"logged_in_username": purchased_course.order.user.username})
@@ -80,6 +81,12 @@ def sale_order_record_features(course_id, features):
         # Extracting OrderItem information of unit_cost, list_price and status
         order_item_dict = dict((feature, getattr(purchased_course, feature, None))
                                for feature in order_item_features)
+
+        # We store the list price only when a discount has been applied, otherwise, we just use the unit_cost.
+        if order_item_dict['list_price'] is None:
+            order_item_dict['list_price'] = order_item_dict['unit_cost']
+        sale_order_dict.update({"total_discount": (order_item_dict['list_price'] - order_item_dict['unit_cost']) * quantity})
+
         order_item_dict.update({"coupon_code": 'N/A'})
 
         coupon_redemption = CouponRedemption.objects.select_related('coupon').filter(order_id=purchased_course.order_id)

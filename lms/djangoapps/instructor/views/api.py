@@ -951,7 +951,6 @@ def get_sale_order_records(request, course_id):  # pylint: disable=unused-argume
         ('company_name', 'Company Name'),
         ('company_contact_name', 'Company Contact Name'),
         ('company_contact_email', 'Company Contact Email'),
-        ('total_amount', 'Total Amount'),
         ('logged_in_username', 'Login Username'),
         ('logged_in_email', 'Login User Email'),
         ('purchase_time', 'Date of Sale'),
@@ -967,8 +966,11 @@ def get_sale_order_records(request, course_id):  # pylint: disable=unused-argume
         ('order_type', 'Order Type'),
         ('status', 'Order Item Status'),
         ('coupon_code', 'Coupon Code'),
-        ('unit_cost', 'Unit Price'),
         ('list_price', 'List Price'),
+        ('unit_cost', 'Unit Price'),
+        ('quantity', 'Quantity'),
+        ('total_discount', 'Total Discount'),
+        ('total_amount', 'Total Amount Paid'),
     ]
 
     db_columns = [x[0] for x in query_features]
