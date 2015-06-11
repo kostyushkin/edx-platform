@@ -344,7 +344,7 @@ class XModuleMixin(XModuleFields, XBlockMixin):
         Return a display name for the module: use display_name if defined in
         metadata, otherwise convert the url name.
         """
-        course_metadata_utils.display_name_with_default(self.display_name, self.url_name)
+        return course_metadata_utils.display_name_with_default(self.display_name, self.location)
 
     @property
     def xblock_kvs(self):

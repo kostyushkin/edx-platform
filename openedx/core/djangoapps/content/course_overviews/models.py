@@ -13,7 +13,6 @@ from django.utils.translation import ugettext
 
 from certificates.api import get_active_web_certificate
 from xmodule import course_metadata_utils
-from xmodule.course_module import CourseFields
 from courseware.courses import course_image_url
 from xmodule.modulestore.django import modulestore
 from xmodule_django.models import CourseKeyField, UsageKeyField
@@ -74,8 +73,8 @@ class CourseOverview(django.db.models.Model):
             id=course.id,
             _location=course.location,
             display_name=course.display_name,
-            display_numer_with_default=course.display_number_with_default,
-            display_org_with_deafult=course.display_org_with_default,
+            display_number_with_default=course.display_number_with_default,
+            display_org_with_default=course.display_org_with_default,
 
             start=course.start,
             end=course.end,
@@ -172,7 +171,7 @@ class CourseOverview(django.db.models.Model):
         """
         Return reasonable display name for the course.
         """
-        return course_metadata_utils.display_name_with_default(self.display_name, self.location.name)
+        return course_metadata_utils.display_name_with_default(self.display_name, self.location)
 
     def has_started(self):
         """

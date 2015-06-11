@@ -26,13 +26,17 @@ def clean_id(location, padding_char):
         b32encode(unicode(location.course_key)).replace('=', padding_char)
     )
 
-def display_name_with_default(display_name, url_name):
+def display_name_with_default(display_name, location):
     """Calculate the display name for a course.
 
-    Default to the given display_name if it isn't None, else fall back to the
-    given url_name.
+    Default to the given display_name if it isn't None, else fall back to creating
+    a name based on the URL (location.name)
+
+    Args:
+        display_name (str): Display name of said course
+        location (UsageKey): Usage key of said course
     """
-    return (display_name or url_name.replace('_', ' ')) \
+    return (display_name or location.name.replace('_', ' ')) \
         .replace('<', '&lt;') \
         .replace('>', '&gt;')
 
