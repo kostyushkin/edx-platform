@@ -24,7 +24,8 @@ var edx = edx || {};
                 model: this.model,
                 modelAttribute: 'faceImage',
                 submitButton: '#next_step_button',
-                errorModel: this.errorModel
+                errorModel: this.errorModel,
+                captureSoundPath: this.stepData.captureSoundPath
             }).render();
 
             // Track a virtual pageview, for easy funnel reconstruction.

@@ -21,10 +21,12 @@
         errorModel: errorView.model,
         stepInfo: {
             'face-photo-step': {
-                platformName: el.data('platform-name')
+                platformName: el.data('platform-name'),
+                captureSoundPath: el.data('capture-sound')
             },
             'id-photo-step': {
-                platformName: el.data('platform-name')
+                platformName: el.data('platform-name'),
+                captureSoundPath: el.data('capture-sound')
             },
             'review-photos-step': {
                 fullName: el.data('full-name'),

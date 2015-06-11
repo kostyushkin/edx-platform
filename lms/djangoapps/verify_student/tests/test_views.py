@@ -42,8 +42,8 @@ from util.date_utils import get_default_time_display
 from util.testing import UrlResetMixin
 from verify_student.views import (
     checkout_with_ecommerce_service,
-    render_to_response, PayAndVerifyView, EVENT_NAME_USER_ENTERED_INCOURSE_REVERIFY_VIEW,
-    EVENT_NAME_USER_SUBMITTED_INCOURSE_REVERIFY, _send_email, _compose_message_reverification_email
+    render_to_response, PayAndVerifyView,
+    _send_email, _compose_message_reverification_email
 )
 from verify_student.models import (
     SoftwareSecurePhotoVerification, VerificationCheckpoint,
@@ -1698,7 +1698,7 @@ class TestInCourseReverifyView(ModuleStoreTestCase):
         # submitting the photo verification
         self.mock_tracker.track.assert_called_once_with(  # pylint: disable=no-member
             self.user.id,  # pylint: disable=no-member
-            EVENT_NAME_USER_ENTERED_INCOURSE_REVERIFY_VIEW,
+            'edx.bi.reverify.started',
             {
                 'category': "verification",
                 'label': unicode(self.course_key),
@@ -1752,7 +1752,7 @@ class TestInCourseReverifyView(ModuleStoreTestCase):
         # photo verification
         self.mock_tracker.track.assert_called_once_with(  # pylint: disable=no-member
             self.user.id,
-            EVENT_NAME_USER_SUBMITTED_INCOURSE_REVERIFY,
+            'edx.bi.reverify.submitted',
             {
                 'category': "verification",
                 'label': unicode(self.course_key),
