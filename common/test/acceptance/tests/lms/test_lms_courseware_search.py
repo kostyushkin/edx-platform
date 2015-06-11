@@ -49,7 +49,7 @@ class CoursewareSearchTest(UniqueCourseTest):
         # create test file in which index for this test will live
         with open(self.TEST_INDEX_FILENAME, "w+") as index_file:
             json.dump({}, index_file)
-        self.addCleanup(os.remove, self.TEST_INDEX_FILENAME)
+        self.addCleanup(self._remove_file, self.TEST_INDEX_FILENAME)
 
         super(CoursewareSearchTest, self).setUp()
         self.courseware_search_page = CoursewareSearchPage(self.browser, self.course_id)
@@ -85,6 +85,15 @@ class CoursewareSearchTest(UniqueCourseTest):
         LogoutPage(self.browser).visit()
         AutoAuthPage(self.browser, username=username, email=email,
                      course_id=self.course_id, staff=staff).visit()
+
+    def _remove_file(self, filename):
+        """
+        Remove a file if it exists
+        """
+        try:
+            os.remove(filename)
+        except OSError:
+            pass
 
     def _studio_publish_content(self, section_index):
         """
