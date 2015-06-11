@@ -123,7 +123,7 @@ class CourseOverview(django.db.models.Model):
         """
         pass  # TODO me
 
-    def __str__(self)::
+    def __str__(self):
         """
         Returns a string representation of this object suitable for a user to see.
         """
