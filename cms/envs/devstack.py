@@ -33,7 +33,7 @@ FEATURES['PREVIEW_LMS_BASE'] = "preview." + LMS_BASE
 ########################### PIPELINE #################################
 
 # Skip RequireJS optimizer in development
-STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
+# STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
 
 ############################# ADVANCED COMPONENTS #############################
 
@@ -100,7 +100,7 @@ SEARCH_ENGINE = "search.elastic.ElasticSearchEngine"
 ################################# DJANGO-REQUIRE ###############################
 
 # Whether to run django-require in debug mode.
-REQUIRE_DEBUG = DEBUG
+# REQUIRE_DEBUG = DEBUG
 
 ###############################################################################
 # See if the developer has any local overrides.
