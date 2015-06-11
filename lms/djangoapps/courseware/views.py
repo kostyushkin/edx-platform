@@ -1097,7 +1097,13 @@ def submission_history(request, course_id, student_username, location):
         raise PermissionDenied
 
     user_state_client = DjangoXBlockUserStateClient()
-    history_entries = user_state_client.get_history(student_username, usage_key)
+    try:
+        history_entries = user_state_client.get_history(student_username, usage_key)
+    except DjangoXBlockUserStateClient.DoesNotExist:
+        return HttpResponse(escape(_(u'User {username} has never accessed problem {location}').format(
+            username=student_username,
+            location=location
+        )))
 
     context = {
         'history_entries': history_entries,
