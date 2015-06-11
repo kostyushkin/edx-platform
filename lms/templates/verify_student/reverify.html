@@ -9,7 +9,7 @@ from django.utils.translation import ugettext as _
 <%block name="pagetitle">${_("Re-Verification")}</%block>
 
 <%block name="header_extras">
-    % for template_name in ["reverify", "webcam_photo", "image_input", "error", "face_photo_step", "id_photo_step", "review_photos_step"]:
+    % for template_name in ["reverify", "webcam_photo", "image_input", "error", "face_photo_step", "id_photo_step", "review_photos_step", "reverify_success_step"]:
         <script type="text/template" id="${template_name}-tpl">
             <%static:include path="verify_student/${template_name}.underscore" />
         </script>

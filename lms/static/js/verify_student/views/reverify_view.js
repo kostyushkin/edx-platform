@@ -16,7 +16,7 @@
             "face-photo-step",
             "id-photo-step",
             "review-photos-step",
-            //"reverify-success-step"
+            "reverify-success-step"
         ],
         stepViews: {},
 
@@ -42,7 +42,7 @@
             nextStepTitles = [
                 gettext( "Take a photo of your ID" ),
                 gettext( "Review your info" ),
-                gettext( "Submit" ),
+                gettext( "Confirm" ),
                 ""
             ];
 
