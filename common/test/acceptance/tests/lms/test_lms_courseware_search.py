@@ -7,7 +7,7 @@ import json
 from nose.plugins.attrib import attr
 from flaky import flaky
 
-from ..helpers import UniqueCourseTest
+from ..helpers import UniqueCourseTest, remove_file
 from ...pages.common.logout import LogoutPage
 from ...pages.studio.utils import add_html_component, click_css, type_in_codemirror
 from ...pages.studio.auto_auth import AutoAuthPage
@@ -49,7 +49,7 @@ class CoursewareSearchTest(UniqueCourseTest):
         # create test file in which index for this test will live
         with open(self.TEST_INDEX_FILENAME, "w+") as index_file:
             json.dump({}, index_file)
-        self.addCleanup(self._remove_file, self.TEST_INDEX_FILENAME)
+        self.addCleanup(remove_file, self.TEST_INDEX_FILENAME)
 
         super(CoursewareSearchTest, self).setUp()
         self.courseware_search_page = CoursewareSearchPage(self.browser, self.course_id)
@@ -85,15 +85,6 @@ class CoursewareSearchTest(UniqueCourseTest):
         LogoutPage(self.browser).visit()
         AutoAuthPage(self.browser, username=username, email=email,
                      course_id=self.course_id, staff=staff).visit()
-
-    def _remove_file(self, filename):
-        """
-        Remove a file if it exists
-        """
-        try:
-            os.remove(filename)
-        except OSError:
-            pass
 
     def _studio_publish_content(self, section_index):
         """

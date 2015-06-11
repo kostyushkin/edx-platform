@@ -96,6 +96,16 @@ def load_data_str(rel_path):
         return data_file.read()
 
 
+def remove_file(filename):
+    """
+    Remove a file if it exists
+    """
+    try:
+        os.remove(filename)
+    except OSError:
+        pass
+
+
 def disable_animations(page):
     """
     Disable jQuery and CSS3 animations.
@@ -675,4 +685,4 @@ class TestWithSearchIndexMixin(object):
 
     def _cleanup_index_file(self):
         """ Removes search index backing file """
-        os.remove(self.TEST_INDEX_FILENAME)
+        remove_file(self.TEST_INDEX_FILENAME)
