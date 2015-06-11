@@ -352,7 +352,7 @@ class UserStateCache(object):
         self._cache = defaultdict(dict)
         self.course_id = course_id
         self.user = user
-        self._client = DjangoXBlockUserStateClient(self.user)
+        self._client = DjangoXBlockUserStateClient()
 
     def cache_fields(self, fields, xblocks, aside_types):  # pylint: disable=unused-argument
         """

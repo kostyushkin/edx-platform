@@ -73,9 +73,9 @@ class Command(BaseCommand):
                 continue
             self.remove_studentmodule_input_state(module, save_changes)
 
-            user_state_client = DjangoXBlockUserStateClient(request.user)
+            user_state_client = DjangoXBlockUserStateClient()
             hist_modules = user_state_client.get_history(student_username, usage_key)
-        
+
             for hist_module in hist_modules:
                 self.remove_studentmodulehistory_input_state(hist_module, save_changes)
 

@@ -1096,7 +1096,7 @@ def submission_history(request, course_id, student_username, location):
     if (student_username != request.user.username) and (not staff_access):
         raise PermissionDenied
 
-    user_state_client = DjangoXBlockUserStateClient(request.user)
+    user_state_client = DjangoXBlockUserStateClient()
     history_entries = user_state_client.get_history(student_username, usage_key)
 
     context = {
