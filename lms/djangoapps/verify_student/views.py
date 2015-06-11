@@ -6,7 +6,6 @@ import datetime
 import decimal
 import json
 import logging
-from collections import namedtuple
 from pytz import UTC
 from ipware.ip import get_ip
 
@@ -14,10 +13,7 @@ from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
-from django.http import (
-    HttpResponse, HttpResponseBadRequest,
-    HttpResponseRedirect, Http404
-)
+from django.http import HttpResponse, HttpResponseBadRequest, Http404
 from django.contrib.auth.models import User
 from django.shortcuts import redirect
 from django.utils import timezone
@@ -987,7 +983,7 @@ class ReverifyView(View):
     @method_decorator(login_required)
     def get(self, request):
         status, _ = SoftwareSecurePhotoVerification.user_status(request.user)
-        if status == "must_reverify":
+        if status in ["must_reverify", "expired"]:
             context = {
                 "user_full_name": request.user.profile.name,
                 "platform_name": settings.PLATFORM_NAME,

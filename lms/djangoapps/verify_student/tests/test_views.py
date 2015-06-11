@@ -1584,23 +1584,74 @@ class TestPhotoVerificationResultsCallback(ModuleStoreTestCase):
         VerificationStatus.add_verification_status(checkpoint, self.user, "submitted")
 
 
-@ddt.ddt
-class TestReverifyView(ModuleStoreTestCase):
+class TestReverifyView(TestCase):
     """
     Tests for the reverification views.
+
+    TODO -- more of an explanation here
     """
+
+    USERNAME = "shaftoe"
+    PASSWORD = "detachment-2702"
+
     def setUp(self):
         super(TestReverifyView, self).setUp()
+        self.user = UserFactory.create(username=self.USERNAME, password=self.PASSWORD)
+        success = self.client.login(username=self.USERNAME, password=self.PASSWORD)
+        self.assertTrue(success, msg="Could not log in")
 
     def test_reverify_view_can_reverify_denied(self):
-        self.fail("TODO")
+        # User has a denied attempt, so can reverify
+        attempt = SoftwareSecurePhotoVerification.objects.create(user=self.user)
+        attempt.mark_ready()
+        attempt.submit()
+        attempt.deny("error")
+        self._assert_can_reverify()
 
     def test_reverify_view_can_reverify_expired(self):
-        self.fail("TODO")
+        # User has a verification attempt, but it's expired
+        attempt = SoftwareSecurePhotoVerification.objects.create(user=self.user)
+        attempt.mark_ready()
+        attempt.submit()
+        attempt.approve()
 
-    @ddt.data(None, "pending", "approved")
-    def test_reverify_view_cannot_reverify(self, verification_status):
-        self.fail("TODO")
+        days_good_for = settings.VERIFY_STUDENT["DAYS_GOOD_FOR"]
+        attempt.created_at = datetime.now(pytz.UTC) - timedelta(days=(days_good_for + 1))
+        attempt.save()
+
+        # Allow the student to reverify
+        self._assert_can_reverify()
+
+    def test_reverify_view_cannot_reverify_pending(self):
+        # User has submitted a verification attempt, but Software Secure has not yet responded
+        attempt = SoftwareSecurePhotoVerification.objects.create(user=self.user)
+        attempt.mark_ready()
+        attempt.submit()
+
+        # Cannot reverify because an attempt has already been submitted.
+        self._assert_cannot_reverify()
+
+    def test_reverify_view_cannot_reverify_approved(self):
+        # Submitted attempt has been approved
+        attempt = SoftwareSecurePhotoVerification.objects.create(user=self.user)
+        attempt.mark_ready()
+        attempt.submit()
+        attempt.approve()
+
+        # Cannot reverify because the user is already verified.
+        self._assert_cannot_reverify()
+
+    def _get_reverify_page(self):
+        url = reverse("verify_student_reverify")
+        return self.client.get(url)
+
+    def _assert_can_reverify(self):
+        response = self._get_reverify_page()
+        self.assertContains(response, "reverify-container")
+
+    def _assert_cannot_reverify(self):
+        response = self._get_reverify_page()
+        self.assertContains(response, "reverify-blocked")
 
 
 class TestInCourseReverifyView(ModuleStoreTestCase):
