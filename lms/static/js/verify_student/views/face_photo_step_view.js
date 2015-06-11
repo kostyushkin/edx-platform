@@ -10,6 +10,8 @@ var edx = edx || {};
 
     edx.verify_student.FacePhotoStepView = edx.verify_student.StepView.extend({
 
+        templateName: "face_photo_step",
+
         defaultContext: function() {
             return {
                 platformName: ''

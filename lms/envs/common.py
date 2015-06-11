@@ -1310,7 +1310,7 @@ reverify_js = [
     'js/verify_student/views/face_photo_step_view.js',
     'js/verify_student/views/id_photo_step_view.js',
     'js/verify_student/views/review_photos_step_view.js',
-    'js/verify_student/views/reverification_success_view.js',
+    'js/verify_student/views/reverify_success_step_view.js',
     'js/verify_student/models/verification_model.js',
     'js/verify_student/views/reverify_view.js',
     'js/verify_student/reverify.js',

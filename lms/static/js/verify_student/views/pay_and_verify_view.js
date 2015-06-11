@@ -83,7 +83,6 @@ var edx = edx || {};
 
                     subviewConfig = {
                         errorModel: this.errorModel,
-                        templateName: this.displaySteps[i].templateName,
                         nextStepTitle: nextStepTitle,
                         stepData: stepData
                     };

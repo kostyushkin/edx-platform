@@ -18,19 +18,16 @@ define(['jquery', 'js/common_helpers/template_helpers', 'js/verify_student/views
             ];
 
             var INTRO_STEP = {
-                templateName: "intro_step",
                 name: "intro-step",
                 title: "Intro"
             };
 
             var DISPLAY_STEPS_FOR_PAYMENT = [
                 {
-                    templateName: "make_payment_step",
                     name: "make-payment-step",
                     title: "Make Payment"
                 },
                 {
-                    templateName: "payment_confirmation_step",
                     name: "payment-confirmation-step",
                     title: "Payment Confirmation"
                 }
@@ -38,22 +35,18 @@ define(['jquery', 'js/common_helpers/template_helpers', 'js/verify_student/views
 
             var DISPLAY_STEPS_FOR_VERIFICATION = [
                 {
-                    templateName: "face_photo_step",
                     name: "face-photo-step",
                     title: "Take Face Photo"
                 },
                 {
-                    templateName: "id_photo_step",
                     name: "id-photo-step",
                     title: "ID Photo"
                 },
                 {
-                    templateName: "review_photos_step",
                     name: "review-photos-step",
                     title: "Review Photos"
                 },
                 {
-                    templateName: "enrollment_confirmation_step",
                     name: "enrollment-confirmation-step",
                     title: "Enrollment Confirmation"
                 }
@@ -67,7 +60,7 @@ define(['jquery', 'js/common_helpers/template_helpers', 'js/verify_student/views
                 }).render();
             };
 
-            var expectStepRendered = function( stepName, stepNum, numSteps ) {
+            var expectStepRendered = function( stepName, stepNum ) {
                 // Expect that the step container div rendered
                 expect( $( '.' + stepName ).length > 0 ).toBe( true );
             };

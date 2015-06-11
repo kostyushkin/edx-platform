@@ -153,43 +153,14 @@ class PayAndVerifyView(View):
         INTRO_STEP,
     ]
 
-    Step = namedtuple(
-        'Step',
-        [
-            'title',
-            'template_name'
-        ]
-    )
-
-    STEP_INFO = {
-        INTRO_STEP: Step(
-            title=ugettext_lazy("Intro"),
-            template_name="intro_step"
-        ),
-        MAKE_PAYMENT_STEP: Step(
-            title=ugettext_lazy("Make payment"),
-            template_name="make_payment_step"
-        ),
-        PAYMENT_CONFIRMATION_STEP: Step(
-            title=ugettext_lazy("Payment confirmation"),
-            template_name="payment_confirmation_step"
-        ),
-        FACE_PHOTO_STEP: Step(
-            title=ugettext_lazy("Take photo"),
-            template_name="face_photo_step"
-        ),
-        ID_PHOTO_STEP: Step(
-            title=ugettext_lazy("Take a photo of your ID"),
-            template_name="id_photo_step"
-        ),
-        REVIEW_PHOTOS_STEP: Step(
-            title=ugettext_lazy("Review your info"),
-            template_name="review_photos_step"
-        ),
-        ENROLLMENT_CONFIRMATION_STEP: Step(
-            title=ugettext_lazy("Enrollment confirmation"),
-            template_name="enrollment_confirmation_step"
-        ),
+    STEP_TITLES = {
+        INTRO_STEP: ugettext_lazy("Intro"),
+        MAKE_PAYMENT_STEP: ugettext_lazy("Make payment"),
+        PAYMENT_CONFIRMATION_STEP: ugettext_lazy("Payment confirmation"),
+        FACE_PHOTO_STEP: ugettext_lazy("Take photo"),
+        ID_PHOTO_STEP: ugettext_lazy("Take a photo of your ID"),
+        REVIEW_PHOTOS_STEP: ugettext_lazy("Review your info"),
+        ENROLLMENT_CONFIRMATION_STEP: ugettext_lazy("Enrollment confirmation"),
     }
 
     # Messages
@@ -551,8 +522,7 @@ class PayAndVerifyView(View):
         return [
             {
                 'name': step,
-                'title': unicode(self.STEP_INFO[step].title),
-                'templateName': self.STEP_INFO[step].template_name
+                'title': unicode(self.STEP_TITLES[step]),
             }
             for step in display_steps
             if step not in remove_steps

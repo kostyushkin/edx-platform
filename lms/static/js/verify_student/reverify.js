@@ -17,7 +17,6 @@
 
     // Initialize the base view, passing in information
     // from the data attributes on the parent div.
-    //
     return new edx.verify_student.ReverifyView({
         errorModel: errorView.model,
         stepInfo: {
