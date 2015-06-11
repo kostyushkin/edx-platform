@@ -11,8 +11,8 @@ from django.utils.timezone import UTC
 from django.utils.translation import ugettext
 
 from certificates.api import get_active_web_certificate
-from common.lib.xmodule.xmodule import course_metadata_utils
-from common.lib.xmodule.xmodule.course_module import CourseFields
+from xmodule.xmodule import course_metadata_utils
+from xmodule.xmodule.course_module import CourseFields
 from contentstore.utils import course_image_url
 from xmodule.modulestore.django import modulestore
 from xmodule_django.models import CourseKeyField, UsageKeyField
@@ -78,7 +78,7 @@ class CourseOverview(django.db.models.Model):
             _location=course.location,
             display_name=course.display_name,
             display_numer_with_default=course.display_number_with_default,
-            display_org_with_deafult = course.display_org_with_default,
+            display_org_with_deafult=course.display_org_with_default,
 
             start=course.start,
             end=course.end,
@@ -150,7 +150,7 @@ class CourseOverview(django.db.models.Model):
             padding_char (str): Character used for padding at end of base-32
                                 -encoded string, defaulting to '='
         """
-        pass  # TODO me
+        return course_metadata_utils.clean_id(self.location, padding_char)
 
     @property
     def location(self):
