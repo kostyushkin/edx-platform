@@ -2,6 +2,7 @@
 Declaration of CourseOverview model
 """
 
+from datetime import datetime as date_time  # the as clause avoids naming conflicts the DateTime field
 import json
 from util.date_utils import strftime_localized
 
@@ -11,15 +12,11 @@ from django.utils.timezone import UTC
 from django.utils.translation import ugettext
 
 from certificates.api import get_active_web_certificate
-from xmodule.xmodule import course_metadata_utils
-from xmodule.xmodule.course_module import CourseFields
-from contentstore.utils import course_image_url
+from xmodule import course_metadata_utils
+from xmodule.course_module import CourseFields
+from courseware.courses import course_image_url
 from xmodule.modulestore.django import modulestore
 from xmodule_django.models import CourseKeyField, UsageKeyField
-
-# Note: this import must come after import django.db.models.fields import *,
-# else datetime doesn't get imported (not entirely sure why this is)
-from datetime import datetime
 
 class CourseOverview(django.db.models.Model):
     """Model for storing and caching basic information about a course.
@@ -181,14 +178,14 @@ class CourseOverview(django.db.models.Model):
         """
         Returns whether the current time is past the start time.
         """
-        return datetime.now(UTC()) > self.start
+        return date_time.now(UTC()) > self.start
 
     def has_ended(self):
         """
         Returns whether (a) there is an end time specified and
                         (b) the current time is past it.
         """
-        return datetime.now(UTC()) > self.end if self.end else False
+        return date_time.now(UTC()) > self.end if self.end else False
 
     def start_datetime_text(self, format_string="SHORT_DATE"):
         """
@@ -212,7 +209,6 @@ class CourseOverview(django.db.models.Model):
         return course_metadata_utils.start_date_is_still_default(
             self.start,
             self.advertised_start,
-            CourseFields.start.default
         )
 
     def end_datetime_text(self, format_string="SHORT_DATE"):
@@ -222,7 +218,6 @@ class CourseOverview(django.db.models.Model):
         return course_metadata_utils.end_datetime_text(
             self.end,
             format_string,
-            ugettext,
             strftime_localized
         )
 

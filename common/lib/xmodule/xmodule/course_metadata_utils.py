@@ -5,9 +5,14 @@ allows us to share code between the CourseDescriptor and CourseOverview
 classes, which both need these type of functions.
 """
 
+from datetime import datetime
 from base64 import b32encode
 
+from django.utils.timezone import UTC
+
 from .fields import Date
+
+DEFAULT_START_DATE = datetime(2030, 1, 1, tzinfo=UTC())
 
 def clean_id(location, padding_char):
     """Returns a unique deterministic base32-encoded ID for a course.
@@ -37,13 +42,12 @@ def _add_timezone_string(date_time):
     """
     return date_time + u" UTC"
 
-@property
-def start_date_is_still_default(start, advertised_start, default_start):
+def start_date_is_still_default(start, advertised_start):
     """
     Checks if the start date set for a course is still default, i.e. .start has not been modified,
     and .advertised_start has not been set.
     """
-    return advertised_start is None and start == default_start
+    return advertised_start is None and start == DEFAULT_START_DATE
 
 def start_datetime_text(start, advertised_start, format_string, ugettext, strftime):
     """

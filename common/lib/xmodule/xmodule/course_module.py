@@ -10,7 +10,6 @@ import requests
 from datetime import datetime
 import dateutil.parser
 from lazy import lazy
-from base64 import b32encode
 
 from xmodule.exceptions import UndefinedContext
 from xmodule.seq_module import SequenceDescriptor, SequenceModule
@@ -24,17 +23,17 @@ from .fields import Date
 from django.utils.timezone import UTC
 
 import course_metadata_utils
+DEFAULT_START_DATE = course_metadata_utils.DEFAULT_START_DATE
 
 log = logging.getLogger(__name__)
 
 # Make '_' a no-op so we can scrape strings
 _ = lambda text: text
 
-DEFAULT_START_DATE = datetime(2030, 1, 1, tzinfo=UTC())
-
 CATALOG_VISIBILITY_CATALOG_AND_ABOUT = "both"
 CATALOG_VISIBILITY_ABOUT = "about"
 CATALOG_VISIBILITY_NONE = "none"
+
 
 
 class StringOrDate(Date):
@@ -1379,19 +1378,17 @@ class CourseDescriptor(CourseFields, LicenseMixin, SequenceDescriptor):
         Checks if the start date set for the course is still default, i.e. .start has not been modified,
         and .advertised_start has not been set.
         """
-        course_metadata_utils.start_date_is_still_default(
+        return course_metadata_utils.start_date_is_still_default(
             self.start,
-            self.advertised_start,
-            CourseFields.start.default
+            self.advertised_start
         )
 
     def end_datetime_text(self, format_string="SHORT_DATE"):
         """
         Returns the end date or date_time for the course formatted as a string.
         """
-        return course_metadata_utils.start_datetime_text(
-            self.start,
-            self.advertised_start,
+        return course_metadata_utils.end_datetime_text(
+            self.end,
             format_string,
             self.runtime.service(self, "i18n").strftime
         )
