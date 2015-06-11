@@ -40,6 +40,7 @@ class CourseOverview(django.db.models.Model):
 
     # Certification data
     certificates_display_behavior = TextField(null=True)
+    certificates_show_before_end = BooleanField()
     has_active_web_certificates = BooleanField()
     cert_name_short = TextField()
     cert_name_long = TextField()
@@ -80,6 +81,7 @@ class CourseOverview(django.db.models.Model):
             social_sharing_url=course.social_sharing_url,
 
             certificates_display_behavior=course.certificates_display_behavior,
+            certificates_show_before_end=course.certificates_show_before_end,
             has_active_web_certificates=(get_active_web_certificate(course) is not None),
             cert_name_short=course.cert_name_short,
             cert_name_long=course.cert_name_long,
