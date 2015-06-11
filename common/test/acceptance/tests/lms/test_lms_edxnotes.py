@@ -306,6 +306,9 @@ class EdxNotesDefaultInteractionsTest(EdxNotesTestMixin):
         self.edit_tags_in_notes(components, [["hard"], ["apple", "pear"]])
         self.assert_tags_in_notes(self.note_unit_page.notes, [["hard"], ["apple", "pear"]])
 
+        # Clicking on active nav bar to focus out.
+        self.note_unit_page.click('a.nav-item.active')
+
         self.edit_tags_in_notes(components, [[], ["avocado"]])
         self.assert_tags_in_notes(self.note_unit_page.notes, [[], ["avocado"]])
 
