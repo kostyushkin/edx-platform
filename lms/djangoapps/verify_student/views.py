@@ -42,6 +42,7 @@ from microsite_configuration import microsite
 from openedx.core.djangoapps.user_api.accounts import NAME_MIN_LENGTH
 from openedx.core.djangoapps.user_api.accounts.api import get_account_settings, update_account_settings
 from openedx.core.djangoapps.user_api.errors import UserNotFound, AccountValidationError
+from openedx.core.djangoapps.credit.api import set_credit_eligible
 from student.models import CourseEnrollment
 from shoppingcart.models import Order, CertificateItem
 from shoppingcart.processors import (
@@ -1008,6 +1009,7 @@ def results_callback(request):
         log.debug("Approving verification for %s", receipt_id)
         attempt.approve()
         status = "approved"
+        set_credit_eligible()
     elif result == "FAIL":
         log.debug("Denying verification for %s", receipt_id)
         attempt.deny(json.dumps(reason), error_code=error_code)

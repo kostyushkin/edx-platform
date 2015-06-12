@@ -292,6 +292,10 @@ def update_credit_request_status(request_uuid, status):
         raise CreditRequestNotFound
 
 
+def set_credit_eligible():
+    eligibility = CreditEligibility.objects.create(username="staff", course_id=1, provider_id=1)
+    eligibility.save()
+
 def get_credit_requests_for_user(username):
     """
     Retrieve the status of a credit request.

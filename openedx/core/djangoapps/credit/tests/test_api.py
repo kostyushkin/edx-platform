@@ -5,14 +5,14 @@ Tests for the API functions in the credit app.
 import datetime
 import ddt
 import pytz
-import dateutil.parser as date_parser
-from django.test import TestCase
-from django.db import connection, transaction
 
+from django.conf import settings
+from django.db import connection, transaction
+from django.test import TestCase
+
+import dateutil.parser as date_parser
 from opaque_keys.edx.keys import CourseKey
 
-from student.tests.factories import UserFactory
-from openedx.core.djangoapps.credit import api
 from openedx.core.djangoapps.credit.exceptions import (
     InvalidCreditRequirements,
     InvalidCreditCourse,
@@ -21,6 +21,7 @@ from openedx.core.djangoapps.credit.exceptions import (
     InvalidCreditStatus,
     CreditRequestNotFound,
 )
+from openedx.core.djangoapps.credit import api
 from openedx.core.djangoapps.credit.models import (
     CreditCourse,
     CreditProvider,
@@ -28,6 +29,8 @@ from openedx.core.djangoapps.credit.models import (
     CreditRequirementStatus,
     CreditEligibility,
 )
+from student.tests.factories import UserFactory
+from unittest import skipUnless
 
 
 class CreditApiTestBase(TestCase):
@@ -192,6 +195,7 @@ class CreditRequirementApiTests(CreditApiTestBase):
         self.assertEqual(grade_req[0].active, False)
 
 
+@skipUnless(settings.ROOT_URLCONF == 'lms.urls', 'Test only valid in LMS')
 @ddt.ddt
 class CreditProviderIntegrationApiTests(CreditApiTestBase):
     """

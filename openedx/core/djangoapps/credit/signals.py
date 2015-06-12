@@ -1,8 +1,8 @@
 """
 This file contains receivers of course publication signals.
 """
+
 import logging
-from .models import CreditEligibility
 
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -10,10 +10,13 @@ from django.core.mail import send_mail
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.translation import ugettext as _
+
 from edxmako.shortcuts import render_to_string
 from microsite_configuration import microsite
+from openedx.core.djangoapps.credit.models import CreditEligibility
 from openedx.core.djangoapps.user_api.accounts.api import get_account_settings
 from xmodule.modulestore.django import SignalHandler
+
 
 log = logging.getLogger(__name__)
 
@@ -32,7 +35,7 @@ def listen_for_course_publish(sender, course_key, **kwargs):  # pylint: disable=
 
 
 @receiver(post_save, sender=CreditEligibility)
-def send_credit_eligible_mail(sender, instance, created, **kwargs):  # pylint: disable=unused-argument
+def send_credit_eligibility_email(sender, instance, created, **kwargs):  # pylint: disable=unused-argument
     """Receive post_save signal for 'CreditEligibility' and sends email to user for being eligible for
     the course if 'CreditEligibility' object created successfully
     """
